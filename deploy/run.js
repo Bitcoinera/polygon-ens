@@ -14,8 +14,8 @@ const main = async () => {
 
   console.log("Random person is", randomPerson.address);
   // try to get an error
-  let txnError = await domainContract
-    .connect(randomPerson)
+  const txnError = await domainContract
+    .connect(owner) // .connect(randomPerson)
     .setRecords("Hahaha, this is now my domain!");
   await txnError.wait();
   const domain = await domainContract.connect(owner).getDomain();
