@@ -12,9 +12,14 @@ contract Domains {
         console.log("Domains contract is here.");
     }
 
-    modifier onlyOwner(string calldata _domain, address _sender) {
+    modifier onlyOwner(address _sender) {
         // Check that the owner is the transaction sender
-        require(domains[_domain] == msg.sender, "Not the owner of this domain");
+        if (
+            keccak256(abi.encodePacked(ownerToDomain[_sender])) ==
+            keccak256(abi.encodePacked(""))
+        ) {
+            revert("Not the owner of this domain");
+        }
         _;
     }
 
@@ -25,10 +30,7 @@ contract Domains {
         ownerToDomain[msg.sender] = _domain;
     }
 
-    function setRecords(string calldata _domain)
-        public
-        onlyOwner(_domain, msg.sender)
-    {
+    function setRecords(string calldata _domain) public onlyOwner(msg.sender) {
         console.log(
             "Modifying domain",
             ownerToDomain[msg.sender],
