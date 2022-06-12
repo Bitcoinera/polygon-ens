@@ -1,18 +1,18 @@
 const main = async () => {
   const [owner, randomPerson] = await hre.ethers.getSigners();
   const domainContractFactory = await hre.ethers.getContractFactory("Domains");
-  const domainContract = await domainContractFactory.deploy("ninja"); // like this all our domains will have the .ninja top-level domain
+  const domainContract = await domainContractFactory.deploy("bit"); // like this all our domains will have the .ninja top-level domain
   await domainContract.deployed();
   console.log("Contract deployed to:", domainContract.address);
   console.log("Contract deployed by:", owner.address);
 
   // We're passing in a second variable - value. This is the moneyyyyyyyyyy
-  let txn = await domainContract.register("mortal", {
+  let txn = await domainContract.register("chubbycat", {
     value: hre.ethers.utils.parseEther("0.1"),
   });
   await txn.wait();
 
-  const address = await domainContract.getAddress("mortal");
+  const address = await domainContract.getAddress("chubbycat");
   console.log("Owner of domain mortal:", address);
 
   const balance = await hre.ethers.provider.getBalance(domainContract.address);
