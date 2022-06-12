@@ -63,7 +63,7 @@ contract Domains is ERC721URIStorage {
         string memory strLen = Strings.toString(length);
 
         console.log(
-            "Registering %s.%s on the contract with tokenID %d",
+            "Registering %s%s on the contract with tokenID %d",
             name,
             tld,
             newTokenId
