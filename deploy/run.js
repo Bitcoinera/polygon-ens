@@ -20,6 +20,9 @@ const main = async () => {
 
   const domain = await domainContract.getDomain();
   console.log("Domain:", domain);
+
+  const domainDetails = await domainContract.getDomainDetails();
+  console.log("Domain details:", domainDetails);
 };
 
 const runMain = async () => {
