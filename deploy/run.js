@@ -30,42 +30,46 @@ const main = async () => {
   const domain = await domainContract.getDomain();
   console.log("Domain:", domain);
 
-  const allNames = await domainContract.getAllNames();
-  console.log("All names:", allNames);
+  let allNames = await domainContract.getDomains();
+  console.log("All names of owner:", allNames);
 
-  // Quick! Grab the funds from the contract! (as superCoder)
-  try {
-    txn = await domainContract.connect(randomPerson).withdraw();
-    await txn.wait();
-  } catch (error) {
-    console.log("Could not rob contract");
-  }
+  await domainContract.setDomain("sadcat", "happycat");
+  allNames = await domainContract.getDomains();
+  console.log("All names after setDomain:", allNames);
 
-  // Let's look in their wallet so we can compare later
-  let ownerBalance = await hre.ethers.provider.getBalance(owner.address);
-  console.log(
-    "Balance of owner before withdrawal:",
-    hre.ethers.utils.formatEther(ownerBalance)
-  );
+  // // Quick! Grab the funds from the contract! (as superCoder)
+  // try {
+  //   txn = await domainContract.connect(randomPerson).withdraw();
+  //   await txn.wait();
+  // } catch (error) {
+  //   console.log("Could not rob contract");
+  // }
 
-  // Oops, looks like the owner is saving their money!
-  txn = await domainContract.connect(owner).withdraw();
-  await txn.wait();
+  // // Let's look in their wallet so we can compare later
+  // let ownerBalance = await hre.ethers.provider.getBalance(owner.address);
+  // console.log(
+  //   "Balance of owner before withdrawal:",
+  //   hre.ethers.utils.formatEther(ownerBalance)
+  // );
 
-  // Fetch balance of contract & owner
-  const contractBalance = await hre.ethers.provider.getBalance(
-    domainContract.address
-  );
-  ownerBalance = await hre.ethers.provider.getBalance(owner.address);
+  // // Oops, looks like the owner is saving their money!
+  // txn = await domainContract.connect(owner).withdraw();
+  // await txn.wait();
 
-  console.log(
-    "Contract balance after withdrawal:",
-    hre.ethers.utils.formatEther(contractBalance)
-  );
-  console.log(
-    "Balance of owner after withdrawal:",
-    hre.ethers.utils.formatEther(ownerBalance)
-  );
+  // // Fetch balance of contract & owner
+  // const contractBalance = await hre.ethers.provider.getBalance(
+  //   domainContract.address
+  // );
+  // ownerBalance = await hre.ethers.provider.getBalance(owner.address);
+
+  // console.log(
+  //   "Contract balance after withdrawal:",
+  //   hre.ethers.utils.formatEther(contractBalance)
+  // );
+  // console.log(
+  //   "Balance of owner after withdrawal:",
+  //   hre.ethers.utils.formatEther(ownerBalance)
+  // );
 };
 
 const runMain = async () => {

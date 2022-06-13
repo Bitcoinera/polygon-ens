@@ -32,6 +32,7 @@ contract Domains is ERC721URIStorage {
     mapping(string => address) public domainToOwner;
     mapping(address => string) public ownerToDomain;
     mapping(uint256 => string) public names;
+    mapping(address => string[]) public ownerToDomains;
 
     modifier onlyOwner() {
         if (msg.sender != i_owner) revert NotOwner();
@@ -99,6 +100,7 @@ contract Domains is ERC721URIStorage {
         _setTokenURI(newTokenId, finalTokenUri);
         domainToOwner[name] = msg.sender;
         ownerToDomain[msg.sender] = name;
+        ownerToDomains[msg.sender].push(name);
 
         _tokenIds.increment();
         names[newTokenId] = name;
@@ -129,8 +131,30 @@ contract Domains is ERC721URIStorage {
         return domainToOwner[name];
     }
 
+    function setDomain(string calldata _newName, string calldata _oldName)
+        public
+        payable
+    {
+        string[] memory allDomains = ownerToDomains[msg.sender];
+        for (uint256 i = 0; i < allDomains.length; i++) {
+            if (
+                keccak256(abi.encodePacked(allDomains[i])) ==
+                keccak256(abi.encodePacked(_oldName))
+            ) {
+                console.log("Changing domain %s to %s", _oldName, _newName);
+                allDomains[i] = _newName;
+                ownerToDomains[msg.sender] = allDomains;
+                break;
+            }
+        }
+    }
+
     function getDomain() public view returns (string memory) {
         return string(abi.encodePacked(ownerToDomain[msg.sender], tld));
+    }
+
+    function getDomains() public view returns (string[] memory) {
+        return ownerToDomains[msg.sender];
     }
 
     function getAllNames() public view returns (string[] memory) {
