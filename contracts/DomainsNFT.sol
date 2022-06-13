@@ -131,7 +131,7 @@ contract Domains is ERC721URIStorage {
         return domainToOwner[name];
     }
 
-    function setDomain(string calldata _newName, string calldata _oldName)
+    function setDomain(string calldata _oldName, string calldata _newName)
         public
         payable
     {

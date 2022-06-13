@@ -13,16 +13,16 @@ const main = async () => {
   let txn = await domainContract.register("chubbycat", {
     value: hre.ethers.utils.parseEther("0.1"),
   });
-  let txn2 = await domainContract.register("happycat", {
+  let txn2 = await domainContract.register("sadcat", {
     value: hre.ethers.utils.parseEther("0.1"),
   });
   await txn.wait();
   await txn2.wait();
 
   const address = await domainContract.getAddress("chubbycat");
-  const address2 = await domainContract.getAddress("happycat");
+  const address2 = await domainContract.getAddress("sadcat");
   console.log("Owner of domain chubbycat:", address);
-  console.log("Owner of domain happycat:", address2);
+  console.log("Owner of domain sadcat:", address2);
 
   const balance = await hre.ethers.provider.getBalance(domainContract.address);
   console.log("Contract balance:", hre.ethers.utils.formatEther(balance));
